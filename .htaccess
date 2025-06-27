@@ -1,0 +1,38 @@
+# ================= أساسيات =================
+RewriteEngine On
+
+# لو الموقع فى مجلد فرعى استبدل /shop/ بما يناسبك
+# RewriteBase /shop/
+
+# إزالة index.php من الروابط
+RewriteCond %{THE_REQUEST} \s/+index\.php[?\s]
+RewriteRule ^index\.php(.*)$ /$1 [L,R=301]
+
+# إزالة الشرطة المائلة من النهاية
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} .+/$
+RewriteRule ^(.+?)/*$ /$1 [L,R=301]
+
+# ============= الروابط الصديقة =============
+# متاجر: /stores/12 أو /stores/12/اسم-المتجر
+RewriteRule ^stores/([0-9]+)(/[^/]*)?/?$ store.php?id=$1 [L,QSA]
+
+# الروابط الصديقة للصفحات الرئيسية الأخرى
+RewriteRule ^stores/?$ stores.php [L,QSA]
+RewriteRule ^cart/?$ cart.php [L,QSA]
+RewriteRule ^contact/?$ contact.php [L,QSA]
+RewriteRule ^search/?$ search.php [L,QSA]
+# يمكنك إضافة المزيد من القواعد هنا لصفحات أخرى إذا كانت لديك.
+# مثال: RewriteRule ^about/?$ about.php [L,QSA]
+
+# منتجات (جاهزة للتفعيل مستقبلاً)
+# RewriteRule ^product/([0-9]+)(/[^/]*)?/?$ product.php?id=$1 [L,QSA]
+
+# =========== كاش بسيط للفرنت إند ===========
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 7 days"
+  ExpiresByType application/javascript "access plus 7 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/png  "access plus 30 days"
+</IfModule>
